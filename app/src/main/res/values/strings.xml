@@ -2,9 +2,10 @@
     <string name="app_name">Open Sooq</string>
     <string name="temp_celsius">50&#xb0;</string>
     <string name="temp_fahrenheit">50\u2109</string>
-    <string name="temp_degree">50\u00B0</string>
+    <string name="temp_degree">30\u00B0</string>
     <string name="temp_max_degree">30\u00B0 / 13\u00B0</string>
     <string name="title_search">Search</string>
     <string name="digits">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz</string>
-
+    <string name="more">More</string>
+    <string name="title_feels_like">Feels like %1$s\u00B0</string>
 </resources>

@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_10dp"
-                android:tint="@color/white"
                 android:src="@drawable/ic_location_on"
+                android:tint="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,8 +49,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Wed, 23 March 1:45 am"
-                android:textSize="@dimen/_15sp"
                 android:textColor="@color/white"
+                android:textSize="@dimen/_15sp"
                 app:layout_constraintStart_toStartOf="@id/ivLocationIcon"
                 app:layout_constraintTop_toBottomOf="@+id/ivLocationIcon" />
 
@@ -65,14 +65,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
             <TextView
-                android:id="@+id/tvTemprature"
+                android:id="@+id/tvTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10dp"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_20dp"
                 android:text="@string/temp_degree"
-                android:textSize="@dimen/_35sp"
                 android:textColor="@color/white"
+                android:textSize="@dimen/_35sp"
                 app:layout_constraintStart_toEndOf="@+id/ivWeatherIcon"
                 app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
@@ -81,6 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20dp"
+                android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
                 android:text="Smoke"
                 android:textColor="@color/white"
@@ -94,8 +96,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/_10dp"
                 android:text="@string/temp_max_degree"
-                android:textSize="@dimen/_15sp"
                 android:textColor="@color/white"
+                android:textSize="@dimen/_15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvClimate" />
 
@@ -103,6 +105,7 @@
                 android:id="@+id/tvFeelsLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
                 android:text="Feels like 23"
                 android:textColor="@color/white"
@@ -128,7 +131,7 @@
                 android:layout_marginBottom="@dimen/_10dp"
                 android:background="@drawable/badge_circular"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="More"
+                android:text="@string/more"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15sp"
@@ -136,7 +139,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvForecasts" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -55,11 +55,24 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         initViewModels()
         observeStateLoader()
         initAdapterViews()
-
         mHomeViewModel.getSearchResults(
             "e5ea508aa7174598bc4104948222003",
-            "Lahore",
-            "2",
+            "Amman",
+            "7",
+            "3",
+            "json"
+        )
+        mHomeViewModel.getSearchResults(
+            "e5ea508aa7174598bc4104948222003",
+            "Irbid",
+            "7",
+            "3",
+            "json"
+        )
+        mHomeViewModel.getSearchResults(
+            "e5ea508aa7174598bc4104948222003",
+            "Aqaba",
+            "7",
             "3",
             "json"
         )
