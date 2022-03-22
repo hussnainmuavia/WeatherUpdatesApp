@@ -29,12 +29,12 @@
             android:layout_marginStart="@dimen/_10dp"
             android:layout_marginLeft="@dimen/_10dp"
             android:background="@color/transparent"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz"
+            android:digits="@string/digits"
             android:ems="10"
             android:hint="@string/title_search"
             android:inputType="textNoSuggestions"
             android:lines="1"
-            android:maxLength="40"
+            android:maxLength="30"
             android:maxLines="1"
             android:textSize="@dimen/_17sp" />
 
