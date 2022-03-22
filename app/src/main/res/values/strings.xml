@@ -8,4 +8,6 @@
     <string name="digits">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz</string>
     <string name="more">More</string>
     <string name="title_feels_like">Feels like %1$s\u00B0</string>
+    <string name="title_temp">%1$s\u00B0</string>
+    <string name="title_humidity">Humidity %1$s</string>
 </resources>

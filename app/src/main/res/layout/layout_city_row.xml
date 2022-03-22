@@ -25,6 +25,7 @@
                 android:id="@+id/ivLocationIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10dp"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_10dp"
                 android:src="@drawable/ic_location_on"
@@ -38,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_10dp"
-                android:text="Lahore"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_20sp"
                 app:layout_constraintStart_toEndOf="@+id/ivLocationIcon"
@@ -48,19 +48,19 @@
                 android:id="@+id/tvDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wed, 23 March 1:45 am"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintStart_toStartOf="@id/ivLocationIcon"
                 app:layout_constraintTop_toBottomOf="@+id/ivLocationIcon" />
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivWeatherIcon"
                 android:layout_width="@dimen/_50dp"
                 android:layout_height="@dimen/_50dp"
                 android:layout_marginTop="@dimen/_20dp"
-                android:src="@drawable/ic_location_on"
-                android:tint="@color/white"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="@color/transparent"
+                app:civ_border_width="2dp"
                 app:layout_constraintStart_toStartOf="@id/tvDateTime"
                 app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
@@ -71,9 +71,8 @@
                 android:layout_marginStart="@dimen/_10dp"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_20dp"
-                android:text="@string/temp_degree"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_35sp"
+                android:textSize="@dimen/_32sp"
                 app:layout_constraintStart_toEndOf="@+id/ivWeatherIcon"
                 app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
@@ -84,18 +83,17 @@
                 android:layout_marginTop="@dimen/_20dp"
                 android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
-                android:text="Smoke"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
             <TextView
-                android:id="@+id/tvMaxTemp"
+                android:id="@+id/tvHumidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
-                android:text="@string/temp_max_degree"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -107,11 +105,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
-                android:text="Feels like 23"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvMaxTemp" />
+                app:layout_constraintTop_toBottomOf="@+id/tvHumidity" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvForecasts"

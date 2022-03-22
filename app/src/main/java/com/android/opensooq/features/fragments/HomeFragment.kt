@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.opensooq.R
 import com.android.opensooq.core.dao.OpenSooqDatabase
+import com.android.opensooq.core.models.request.FavouriteModel
+import com.android.opensooq.core.models.response.SearchResult
 import com.android.opensooq.core.utils.HomeConstants
 import com.android.opensooq.core.utils.State
 import com.android.opensooq.features.adapters.FavouriteCitiesAdapter
 import com.android.opensooq.features.callbacks.OnItemClickListener
-import com.android.opensooq.core.models.request.FavouriteModel
-import com.android.opensooq.core.models.response.SearchResult
 import com.android.opensooq.features.viewmodels.HomeViewModel
 
 
@@ -30,7 +30,7 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
     private lateinit var openSooqDatabase: OpenSooqDatabase
     private lateinit var mSearchResult: SearchResult
     private lateinit var mFavouriteCities: FavouriteCitiesAdapter
-    private var mFavourites : ArrayList<FavouriteModel> = ArrayList()
+    private var mFavourites: ArrayList<FavouriteModel> = ArrayList()
 
     private lateinit var mView: View
     private lateinit var rvCityCardsView: RecyclerView
@@ -95,11 +95,11 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
                             ex.printStackTrace()
                         }
 
-                       /* for (ms247 in ms247List) {
-                            for (ms247Item in ms247) {
-                                musicDatabase!!.musicDao().insertItems(ms247Item.items)
-                            }
-                        }*/
+                        /* for (ms247 in ms247List) {
+                             for (ms247Item in ms247) {
+                                 musicDatabase!!.musicDao().insertItems(ms247Item.items)
+                             }
+                         }*/
                         Log.d(HomeConstants.TAG, HomeConstants.TAG_SAVED)
 
                     } catch (ex: Exception) {
@@ -115,9 +115,9 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
                 .of(this, viewModelFactory)[HomeViewModel::class.java]
     }
 
-    private fun observeStateLoader(){
-        mHomeViewModel?.getState().observe(viewLifecycleOwner , Observer{
-            when(it){
+    private fun observeStateLoader() {
+        mHomeViewModel?.getState().observe(viewLifecycleOwner, Observer {
+            when (it) {
                 State.LOADING -> mProgressBar.visibility = View.VISIBLE
                 State.ERROR -> mProgressBar.visibility = View.GONE
                 State.DONE -> mProgressBar.visibility = View.GONE

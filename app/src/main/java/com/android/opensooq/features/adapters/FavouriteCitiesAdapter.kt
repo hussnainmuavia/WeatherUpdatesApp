@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.opensooq.R
 import com.android.opensooq.core.models.request.FavouriteModel
 import com.android.opensooq.features.callbacks.OnItemClickListener
+import com.squareup.picasso.Picasso
 
 class FavouriteCitiesAdapter(private val context: Context) :
     RecyclerView.Adapter<FavCitiesViewHolder>() {
@@ -36,16 +37,16 @@ class FavouriteCitiesAdapter(private val context: Context) :
 
         val item = mFavouriteModel?.get(position)
         val searchResult = item?.searchResult
-        val currentCondition = searchResult?.data?.currentCondition?.get(position)
-        //ivLocationIcon
+        val currentCondition = searchResult?.data?.currentCondition?.get(0)
         holder.tvCityName.text = item?.query
         holder.tvDateTime.text = currentCondition?.observationTime
-        //holder.ivWeatherIcon.text = ""
-        holder.tvTemperature.text = currentCondition?.tempC
+        val weatherIcon = currentCondition?.weatherIconUrl?.get(0)?.value
+        Picasso.get().load(weatherIcon).into(holder.ivWeatherIcon)
+        holder.tvTemperature.text = context.getString(R.string.title_temp, currentCondition?.tempC)
         holder.tvClimate.text = currentCondition?.weatherDesc?.get(0)?.value
-        holder.tvMaxTemp.text = currentCondition?.humidity
-        holder.tvFeelsLike.text = context?.getString(R.string.title_feels_like, currentCondition?.feelsLikeC)
-        //holder.rvForecasts.text = ""
+        holder.tvHumidity.text = context.getString(R.string.title_humidity, currentCondition?.humidity)
+        holder.tvFeelsLike.text = context.getString(R.string.title_feels_like, currentCondition?.feelsLikeC)
+        //holder.rvForecasts
 
         holder.tvMore?.setOnClickListener {
 
@@ -72,7 +73,7 @@ class FavCitiesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val ivWeatherIcon: ImageView = view.findViewById(R.id.ivWeatherIcon)
     val tvTemperature: TextView = view.findViewById(R.id.tvTemperature)
     val tvClimate: TextView = view.findViewById(R.id.tvClimate)
-    val tvMaxTemp: TextView = view.findViewById(R.id.tvMaxTemp)
+    val tvHumidity: TextView = view.findViewById(R.id.tvHumidity)
     val tvFeelsLike: TextView = view.findViewById(R.id.tvFeelsLike)
     val rvForecasts: RecyclerView = view.findViewById(R.id.rvForecasts)
     val tvMore: TextView = view.findViewById(R.id.tvMore)

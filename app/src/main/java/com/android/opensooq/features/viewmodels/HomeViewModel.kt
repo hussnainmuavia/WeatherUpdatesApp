@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.opensooq.core.api.ApiInterface
+import com.android.opensooq.core.models.response.SearchResult
 import com.android.opensooq.core.utils.Constants.API_ERROR
 import com.android.opensooq.core.utils.State
-import com.android.opensooq.core.models.response.SearchResult
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -49,7 +49,7 @@ class HomeViewModel @Inject constructor(private val apiInterface: ApiInterface) 
     }
 
     private fun handleSearchResponse(searchResult: SearchResult) {
-        mSearchResult?.value = searchResult
+        mSearchResult.value = searchResult
     }
 
     private fun handleSearchError(error: Throwable) {
