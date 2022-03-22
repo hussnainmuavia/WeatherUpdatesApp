@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorPrimary">#00AAAA</color>
+    <color name="colorPrimaryDark">#00AAAA</color>
+    <color name="colorAccent">#00AAAA</color>
+
+    <color name="color_grey_with50_opacity">#804A4A4A</color>
+    <color name="colorStatusBar">#00574B</color>
+
+    <color name="navy_dark">#000000</color>
+    <color name="grey_circle">#979797</color>
+    <color name="grey_points">#5F5F5F</color>
+    <color name="grey_background">#E1E3E2</color>
+
+    <color name="grey_round_corner">#CDCED2</color>
+    <color name="red_date_color">#D0021B</color>
+    <color name="red_color">#FF3B30</color>
+    <color name="dark_grey_report">#555555</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="grey">#EDEDED</color>
+
+    <color name="grey_login">#FF676667</color>
+    <color name="colorGrey">#80676767</color>
+    <color name="hazel">#00C0F2</color>
+    <color name="blue_button">#007AFF</color>
+    <color name="grey_progress">#8C8C8C</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="seprator">#cccfd4</color>
+    <color name="silver">#ced1d5</color>
+    <color name="moreBackground">#efeff4</color>
+    <color name="more_seprator">#c8c7cc</color>
+
+    <color name="color_yellow">#FFCC00</color>
+    <color name="color_light_yellow">#FFE900</color>
+
+    <color name="blue_questioanir_top">#7CD1F5</color>
+    <color name="blue_questioanir_bottom">#1C80DF</color>
+
+    <color name="orange">#F07D00</color>
+    <color name="orange_light">#FF9500</color>
+    <color name="text_color_blue">#077EFF</color>
+    <color name="translucent">#CC000000</color>
+    <color name="translucent_background">#88FAFAFA</color>
+
+    <color name="seebar_thumb_color_first">#FF3C32</color>
+    <color name="seebar_thumb_color_second">#FF9602</color>
+    <color name="seebar_thumb_color_third">#FFCC02</color>
+    <color name="seebar_thumb_color_fourth">#F8E71E</color>
+    <color name="seebar_thumb_color_fifth">#FFEB3C</color>
+
+    <color name="color_tint_sky_blue">#02C7C5</color>
+    <color name="color_tint_sky_blue_image">#01cec8</color>
+    <color name="color_btn_filters">#3F4349</color>
+    <color name="color_progressbar">#BA04F3EC</color>
+    <color name="color_sky_blue">#00BBBB</color>
+
 </resources>
