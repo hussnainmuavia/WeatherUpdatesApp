@@ -7,6 +7,10 @@ import androidx.lifecycle.ViewModel
 import com.android.opensooq.core.api.ApiInterface
 import com.android.opensooq.core.models.response.SearchResult
 import com.android.opensooq.core.utils.Constants.API_ERROR
+import com.android.opensooq.core.utils.Constants.API_KEY
+import com.android.opensooq.core.utils.Constants.FORMAT
+import com.android.opensooq.core.utils.Constants.NUM_OF_DAYS
+import com.android.opensooq.core.utils.Constants.TIME_PERIOD
 import com.android.opensooq.core.utils.State
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -20,15 +24,9 @@ class HomeViewModel @Inject constructor(private val apiInterface: ApiInterface) 
     var mSearchResult: MutableLiveData<SearchResult> = MutableLiveData()
     var mState: MutableLiveData<State> = MutableLiveData()
 
-    private fun getSearch(
-        key: String,
-        query: String,
-        numOfDays: String,
-        tp: String,
-        format: String
-    ) {
+    private fun getSearch(query: String) {
         compositeDisposable.add(
-            apiInterface.getSearchResults(key, query, numOfDays, tp, format)
+            apiInterface.getSearchResults(API_KEY, query, NUM_OF_DAYS, TIME_PERIOD, FORMAT)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe { updateState(State.LOADING) }
@@ -56,14 +54,8 @@ class HomeViewModel @Inject constructor(private val apiInterface: ApiInterface) 
         Log.d(API_ERROR, error.toString())
     }
 
-    fun getSearchResults(
-        key: String,
-        query: String,
-        numOfDays: String,
-        tp: String,
-        format: String
-    ) {
-        getSearch(key, query, numOfDays, tp, format)
+    fun getSearchResults(query: String) {
+        getSearch(query)
     }
 
     fun getState(): LiveData<State> {

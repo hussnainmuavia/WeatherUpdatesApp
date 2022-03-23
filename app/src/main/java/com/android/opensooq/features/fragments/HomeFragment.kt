@@ -1,11 +1,17 @@
 package com.android.opensooq.features.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -15,7 +21,8 @@ import com.android.opensooq.R
 import com.android.opensooq.core.dao.OpenSooqDatabase
 import com.android.opensooq.core.models.request.FavouriteModel
 import com.android.opensooq.core.models.response.SearchResult
-import com.android.opensooq.core.utils.HomeConstants
+import com.android.opensooq.core.platform.BaseFragment
+import com.android.opensooq.core.utils.Constants.LOG_MESSAGE
 import com.android.opensooq.core.utils.State
 import com.android.opensooq.features.adapters.FavouriteCitiesAdapter
 import com.android.opensooq.features.callbacks.OnItemClickListener
@@ -24,7 +31,9 @@ import com.android.opensooq.features.viewmodels.HomeViewModel
 
 class HomeFragment : BaseFragment(), OnItemClickListener {
 
-    override fun layoutId() = R.layout.fragment_home
+    private var KEY_AMMAN: String = "Amman"
+    private var KEY_IRBID: String = "Irbid"
+    private var KEY_AQABA: String = "Aqaba"
 
     private lateinit var mHomeViewModel: HomeViewModel
     private lateinit var openSooqDatabase: OpenSooqDatabase
@@ -35,15 +44,21 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
     private lateinit var mView: View
     private lateinit var rvCityCardsView: RecyclerView
     private lateinit var mProgressBar: ProgressBar
+    private lateinit var etSearch: EditText
+    private lateinit var tvNoResultFound: TextView
+
+    override fun layoutId() = R.layout.fragment_home
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         mView = inflater.inflate(R.layout.fragment_home, container, false)
         rvCityCardsView = mView?.findViewById(R.id.rvCityCardsView)
         mProgressBar = mView?.findViewById(R.id.progressBar)
+        etSearch = mView?.findViewById(R.id.etSearch)
+        tvNoResultFound = mView?.findViewById(R.id.tvNoResultFound)
         return mView
     }
 
@@ -51,62 +66,14 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         super.onViewCreated(view, savedInstanceState)
         appComponent.inject(this)
 
-        //initDatabaseInstance()
+        initDatabaseInstance()
         initViewModels()
         observeStateLoader()
         initAdapterViews()
-        mHomeViewModel.getSearchResults(
-            "e5ea508aa7174598bc4104948222003",
-            "Amman",
-            "7",
-            "1",
-            "json"
-        )
-        mHomeViewModel.getSearchResults(
-            "e5ea508aa7174598bc4104948222003",
-            "Irbid",
-            "7",
-            "1",
-            "json"
-        )
-        mHomeViewModel.getSearchResults(
-            "e5ea508aa7174598bc4104948222003",
-            "Aqaba",
-            "7",
-            "1",
-            "json"
-        )
-        mHomeViewModel.mSearchResult?.observe(this,
-            Observer<SearchResult> { search ->
-                if (search?.data != null) {
-                    try {
-                        mSearchResult = search
-
-                        val favouriteModel = FavouriteModel()
-                        favouriteModel.query = search?.data?.request?.get(0)?.query
-                        favouriteModel.type = search?.data?.request?.get(0)?.type
-                        favouriteModel.searchResult = search
-                        mFavourites.add(favouriteModel)
-                        mFavouriteCities.setSearchResults(mFavourites)
-
-                        try {
-                            //musicDatabase!!.musicDao().deleteAllItems()
-                        } catch (ex: Exception) {
-                            ex.printStackTrace()
-                        }
-
-                        /* for (ms247 in ms247List) {
-                             for (ms247Item in ms247) {
-                                 musicDatabase!!.musicDao().insertItems(ms247Item.items)
-                             }
-                         }*/
-                        Log.d(HomeConstants.TAG, HomeConstants.TAG_SAVED)
-
-                    } catch (ex: Exception) {
-                        ex.printStackTrace()
-                    }
-                }
-            })
+        observeSearchResult()
+        searchTextChangedListener()
+        etSearchEditorActionListener()
+        getDataFromRepoOrNetwork()
     }
 
     private fun initViewModels() {
@@ -126,8 +93,8 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
     }
 
     private fun initDatabaseInstance() {
-        this.context?.let { context ->
-            OpenSooqDatabase.getDatabaseInstance(context)?.let { dbInstance ->
+        this.context?.let {
+            OpenSooqDatabase.getDatabaseInstance(it)?.let { dbInstance ->
                 openSooqDatabase = dbInstance
             }
         }
@@ -147,7 +114,7 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         val bundle = Bundle()
         //bundle.putParcelable(HomeConstants.KEY_ITEMS, ms247?.get(position)!!.items)
         fragment?.arguments = bundle
-        //transaction.add(R.id.nav_host_fragment, fragment)
+        transaction.add(R.id.fragmentContainer, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
     }
@@ -157,20 +124,100 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         super.onDestroy()
     }
 
-    private fun saveFavouriteCity(position: Int) {
-        /*try {
-            val album = ms247?.get(position)?.items?.album
-            var count = ms247?.get(position)?.items?.count
-            var track = ms247?.get(position)?.items?.track
-
-            val favouriteTrack = FavouriteTracks(position, album, count, track)
-            openSooqDatabase!!.musicDao().insertFavouriteItems(favouriteTrack)
-        } catch (ex: Exception) {
-            ex.printStackTrace()
-        }*/
+    override fun onItemClickListener(position: Int, any: Any) {
+        val favouriteModel = any as FavouriteModel
+        val searchResult = favouriteModel.searchResult
+        val currentCondition = searchResult?.data?.currentCondition?.get(0)
+        openSooqDatabase.openSooqDao().insertFavouriteCity(favouriteModel)
+        notify("Saved")
     }
 
-    override fun onUserItemClickListener(position: Int) {
+    private fun getSearchService(query: String) {
+        mHomeViewModel.getSearchResults(query)
+    }
 
+    private fun observeSearchResult() {
+        mHomeViewModel.mSearchResult.observe(this,
+            Observer<SearchResult> { search ->
+                if (search?.data?.currentCondition  != null) {
+                    showHide(isVisible = true)
+                    mSearchResult = search
+                    if (!mFavourites.contains(prepareFavouriteModel(search))){
+                        mFavourites.add(prepareFavouriteModel(search))
+                        mFavouriteCities.setSearchResults(mFavourites)
+                        if (etSearch.text?.isNotEmpty() == true && search.data != null){
+                            notify(getString(R.string.message_result_added))
+                        }
+                    } else {
+                        notify(getString(R.string.message_result_already_added))
+                    }
+                } else {
+                    showHide(isVisible = false)
+                }
+            })
+    }
+
+    private fun prepareFavouriteModel(searchResult: SearchResult): FavouriteModel {
+        val favouriteModel = FavouriteModel()
+        favouriteModel.query = searchResult.data?.request?.get(0)?.query
+        favouriteModel.type = searchResult.data?.request?.get(0)?.type
+        favouriteModel.searchResult = searchResult
+        return favouriteModel
+    }
+
+    private fun searchTextChangedListener() {
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(editable: Editable) {
+                val search = editable.toString()
+                if (search?.isNotEmpty() && search?.length >= 2) {
+                    //getSearchService(search)
+                }
+            }
+        })
+    }
+
+    private fun etSearchEditorActionListener() {
+        etSearch.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                val search = etSearch.text.toString()
+                if (search.isNotEmpty() && search.length >= 2) {
+                    hideKeyboard()
+                    getSearchService(search)
+                }
+                return@OnEditorActionListener true
+            }
+            false
+        })
+    }
+
+    private fun showHide(isVisible : Boolean){
+        when(isVisible){
+            true -> {
+                rvCityCardsView.visibility = View.VISIBLE
+                tvNoResultFound.visibility = View.GONE
+            }
+            false -> {
+                if (mFavouriteCities?.itemCount > 0){
+                    notify(getString(R.string.message_no_result_found))
+                } else {
+                    rvCityCardsView.visibility = View.GONE
+                    tvNoResultFound.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun getDataFromRepoOrNetwork(){
+        mFavourites = openSooqDatabase.openSooqDao().favouriteCities as ArrayList<FavouriteModel>
+        if (mFavourites.isNotEmpty()){
+            showHide(isVisible = true)
+            mFavouriteCities.setSearchResults(mFavourites)
+        } else {
+            getSearchService(KEY_AMMAN)
+            getSearchService(KEY_IRBID)
+            getSearchService(KEY_AQABA)
+        }
     }
 }

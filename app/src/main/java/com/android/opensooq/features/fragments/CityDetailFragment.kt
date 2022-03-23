@@ -3,6 +3,7 @@ package com.android.opensooq.features.fragments
 import android.os.Bundle
 import android.view.View
 import com.android.opensooq.R
+import com.android.opensooq.core.platform.BaseFragment
 
 class CityDetailFragment : BaseFragment() {
 

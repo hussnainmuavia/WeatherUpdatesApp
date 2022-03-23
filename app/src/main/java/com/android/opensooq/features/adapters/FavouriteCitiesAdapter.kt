@@ -13,11 +13,12 @@ import com.android.opensooq.core.models.request.FavouriteModel
 import com.android.opensooq.core.models.response.Hourly
 import com.android.opensooq.core.utils.DateTimeUtil
 import com.android.opensooq.core.utils.DateTimeUtil.COMPLETE_TIME_FORMAT
+import com.android.opensooq.features.callbacks.OnHourClickListener
 import com.android.opensooq.features.callbacks.OnItemClickListener
 import com.squareup.picasso.Picasso
 
 class FavouriteCitiesAdapter(private val context: Context) :
-    RecyclerView.Adapter<FavCitiesViewHolder>() {
+    RecyclerView.Adapter<FavCitiesViewHolder>(), OnHourClickListener {
 
     private lateinit var mOnItemClickListener: OnItemClickListener
     private var mFavouriteModel: ArrayList<FavouriteModel>? = null
@@ -44,12 +45,13 @@ class FavouriteCitiesAdapter(private val context: Context) :
         val currentCondition = searchResult?.data?.currentCondition?.get(0)
         holder.tvCityName.text = item?.query
         val dateTime = currentCondition?.observationTime?.let {
-            it + " "+DateTimeUtil.getDateTime(COMPLETE_TIME_FORMAT)
+            it + " " + DateTimeUtil.getDateTime(COMPLETE_TIME_FORMAT)
         }
         holder.tvDateTime.text = dateTime
         val weatherIcon = currentCondition?.weatherIconUrl?.get(0)?.value
         Picasso.get().load(weatherIcon).into(holder.ivWeatherIcon)
         holder.tvTemperature.text = context.getString(R.string.title_temp, currentCondition?.tempC)
+
         holder.tvClimate.text = currentCondition?.weatherDesc?.get(0)?.value
         holder.tvHumidity.text =
             context.getString(R.string.title_humidity, currentCondition?.humidity)
@@ -64,7 +66,7 @@ class FavouriteCitiesAdapter(private val context: Context) :
         }
 
         holder.itemView.setOnClickListener {
-            this.mOnItemClickListener.onUserItemClickListener(position)
+            this.mOnItemClickListener.onItemClickListener(position, item!!)
         }
     }
 
@@ -86,7 +88,17 @@ class FavouriteCitiesAdapter(private val context: Context) :
             isNestedScrollingEnabled = false
             adapter = hourlyAdapter
         }
-        hourly?.let { hourlyAdapter.setHourlyForecasts(it) }
+        hourly?.let {
+            hourlyAdapter.setHourlyForecasts(it)
+            hourlyAdapter.registerCallback(this)
+        }
+    }
+
+    override fun onHourClickListener(any: Any, positon: Int) {
+        /*
+        * Intentionally Blank for demonstration
+        * We can add further details or actions to view the specific hours detail
+        * */
     }
 }
 

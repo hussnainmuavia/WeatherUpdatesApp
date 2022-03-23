@@ -5,10 +5,15 @@
     <string name="temp_degree">30\u00B0</string>
     <string name="temp_max_degree">30\u00B0 / 13\u00B0</string>
     <string name="title_search">Search</string>
-    <string name="digits">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz</string>
     <string name="more">More</string>
     <string name="title_feels_like">Feels like %1$s\u00B0</string>
     <string name="title_temp">%1$s\u00B0</string>
     <string name="title_humidity">Humidity %1$s</string>
     <string name="title_humidity_percent">%1$s %%</string>
+
+    <string name="digits">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz</string>
+
+    <string name="message_result_added">Search Result Added</string>
+    <string name="message_result_already_added">Search Result Already Added</string>
+    <string name="message_no_result_found">No Result Found</string>
 </resources>
