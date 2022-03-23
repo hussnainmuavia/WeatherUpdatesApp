@@ -126,8 +126,6 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
 
     override fun onItemClickListener(position: Int, any: Any) {
         val favouriteModel = any as FavouriteModel
-        val searchResult = favouriteModel.searchResult
-        val currentCondition = searchResult?.data?.currentCondition?.get(0)
         openSooqDatabase.openSooqDao().insertFavouriteCity(favouriteModel)
         notify("Saved")
     }
@@ -143,7 +141,9 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
                     showHide(isVisible = true)
                     mSearchResult = search
                     if (!mFavourites.contains(prepareFavouriteModel(search))){
-                        mFavourites.add(prepareFavouriteModel(search))
+                        val favouriteModel = prepareFavouriteModel(search)
+                        mFavourites.add(favouriteModel)
+                        openSooqDatabase.openSooqDao().insertFavouriteCity(favouriteModel)
                         mFavouriteCities.setSearchResults(mFavourites)
                         if (etSearch.text?.isNotEmpty() == true && search.data != null){
                             notify(getString(R.string.message_result_added))

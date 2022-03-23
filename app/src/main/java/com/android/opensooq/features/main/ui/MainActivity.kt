@@ -1,7 +1,8 @@
 package com.android.opensooq.features.main.ui
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.android.opensooq.R
 import com.android.opensooq.features.fragments.HomeFragment
@@ -20,5 +21,11 @@ class MainActivity : AppCompatActivity() {
         transaction.replace(R.id.fragmentContainer, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
+
+    override fun onBackPressed() {
+        val setIntent = Intent(Intent.ACTION_MAIN)
+        setIntent.addCategory(Intent.CATEGORY_HOME)
+        startActivity(setIntent)
     }
 }
