@@ -3,7 +3,6 @@ package com.android.opensooq.features.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,17 +11,16 @@ import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.opensooq.R
 import com.android.opensooq.core.dao.OpenSooqDatabase
 import com.android.opensooq.core.models.request.FavouriteModel
 import com.android.opensooq.core.models.response.SearchResult
 import com.android.opensooq.core.platform.BaseFragment
-import com.android.opensooq.core.utils.Constants.LOG_MESSAGE
 import com.android.opensooq.core.utils.State
 import com.android.opensooq.features.adapters.FavouriteCitiesAdapter
 import com.android.opensooq.features.callbacks.OnItemClickListener
@@ -46,6 +44,7 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
     private lateinit var mProgressBar: ProgressBar
     private lateinit var etSearch: EditText
     private lateinit var tvNoResultFound: TextView
+    private lateinit var pullToRefresh: SwipeRefreshLayout
 
     override fun layoutId() = R.layout.fragment_home
 
@@ -59,6 +58,7 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         mProgressBar = mView?.findViewById(R.id.progressBar)
         etSearch = mView?.findViewById(R.id.etSearch)
         tvNoResultFound = mView?.findViewById(R.id.tvNoResultFound)
+        pullToRefresh = mView?.findViewById(R.id.pullToRefresh)
         return mView
     }
 
@@ -74,6 +74,7 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         searchTextChangedListener()
         etSearchEditorActionListener()
         getDataFromRepoOrNetwork()
+        swipeToRefresh()
     }
 
     private fun initViewModels() {
@@ -119,6 +120,17 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         addFragment(CityDetailFragment.newInstance(favouriteModel))
     }
 
+    private fun swipeToRefresh(){
+        pullToRefresh.setOnRefreshListener {
+            mFavourites = openSooqDatabase.openSooqDao().favouriteCities as ArrayList<FavouriteModel>
+            mFavourites?.forEach {
+                mHomeViewModel.getSearchResults(it.query.toString())
+            }
+
+            pullToRefresh.isRefreshing = false
+        }
+    }
+
     private fun getSearchService(query: String) {
         mHomeViewModel.getSearchResults(query)
     }
@@ -126,15 +138,15 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
     private fun observeSearchResult() {
         mHomeViewModel.mSearchResult.observe(this,
             Observer<SearchResult> { search ->
-                if (search?.data?.currentCondition  != null) {
+                if (search?.data?.currentCondition != null) {
                     showHide(isVisible = true)
                     mSearchResult = search
-                    if (!mFavourites.contains(prepareFavouriteModel(search))){
+                    if (!mFavourites.contains(prepareFavouriteModel(search))) {
                         val favouriteModel = prepareFavouriteModel(search)
                         mFavourites.add(favouriteModel)
                         openSooqDatabase.openSooqDao().insertFavouriteCity(favouriteModel)
                         mFavouriteCities.setSearchResults(mFavourites)
-                        if (etSearch.text?.isNotEmpty() == true && search.data != null){
+                        if (etSearch.text?.isNotEmpty() == true && search.data != null) {
                             notify(getString(R.string.message_result_added))
                         }
                     } else {
@@ -181,14 +193,14 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         })
     }
 
-    private fun showHide(isVisible : Boolean){
+    private fun showHide(isVisible: Boolean){
         when(isVisible){
             true -> {
                 rvCityCardsView.visibility = View.VISIBLE
                 tvNoResultFound.visibility = View.GONE
             }
             false -> {
-                if (mFavouriteCities?.itemCount > 0){
+                if (mFavouriteCities?.itemCount > 0) {
                     notify(getString(R.string.message_no_result_found))
                 } else {
                     rvCityCardsView.visibility = View.GONE
