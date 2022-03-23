@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.android.opensooq.AndroidApplication
+import com.android.opensooq.R
 import com.android.opensooq.core.di.ApplicationComponent
 import com.android.opensooq.features.main.ui.MainActivity
 import com.google.android.material.snackbar.Snackbar
@@ -23,6 +24,7 @@ import javax.inject.Inject
 abstract class BaseFragment : androidx.fragment.app.Fragment() {
 
     private var v: View? = null
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -69,4 +71,11 @@ abstract class BaseFragment : androidx.fragment.app.Fragment() {
 
     internal fun notify(message: String) =
         Snackbar.make(viewContainer, message, Snackbar.LENGTH_SHORT).show()
+
+    protected fun addFragment(fragment: Fragment) {
+        val transaction = this.activity?.supportFragmentManager?.beginTransaction()
+        transaction?.add(R.id.fragmentContainer, fragment)
+        transaction?.addToBackStack(null)
+        transaction?.commit()
+    }
 }

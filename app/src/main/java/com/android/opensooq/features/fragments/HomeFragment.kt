@@ -109,25 +109,10 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         mFavouriteCities.registerCallback(this@HomeFragment)
     }
 
-    private fun addFragment(fragment: Fragment, position: Int) {
-        val transaction = this.activity!!.supportFragmentManager.beginTransaction()
-        val bundle = Bundle()
-        //bundle.putParcelable(HomeConstants.KEY_ITEMS, ms247?.get(position)!!.items)
-        fragment?.arguments = bundle
-        transaction.add(R.id.fragmentContainer, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
-    }
-
-    override fun onDestroy() {
-        openSooqDatabase?.destroyInstance()
-        super.onDestroy()
-    }
-
     override fun onItemClickListener(position: Int, any: Any) {
         val favouriteModel = any as FavouriteModel
         openSooqDatabase.openSooqDao().insertFavouriteCity(favouriteModel)
-        notify("Saved")
+        addFragment(CityDetailFragment())
     }
 
     private fun getSearchService(query: String) {
@@ -172,7 +157,7 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
             override fun afterTextChanged(editable: Editable) {
                 val search = editable.toString()
                 if (search?.isNotEmpty() && search?.length >= 2) {
-                    //getSearchService(search)
+                    getSearchService(search)
                 }
             }
         })
@@ -219,5 +204,10 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
             getSearchService(KEY_IRBID)
             getSearchService(KEY_AQABA)
         }
+    }
+
+    override fun onDestroy() {
+        openSooqDatabase?.destroyInstance()
+        super.onDestroy()
     }
 }
