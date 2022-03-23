@@ -50,5 +50,5 @@ data class Weather(
 
     @SerializedName("hourly")
     @Expose
-    var hourly: List<Hourly>? = null
+    var hourly: ArrayList<Hourly>? = null
 )

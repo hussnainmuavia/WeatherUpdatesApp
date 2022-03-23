@@ -7,6 +7,10 @@
 
     <color name="color_grey_with50_opacity">#804A4A4A</color>
     <color name="colorStatusBar">#00574B</color>
+    <color name="colorTextDB">#DFDBDB</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="colorYellow">#FFCC00</color>
 
     <color name="navy_dark">#000000</color>
     <color name="grey_circle">#979797</color>
@@ -18,7 +22,7 @@
     <color name="red_color">#FF3B30</color>
     <color name="dark_grey_report">#555555</color>
 
-    <color name="white">#FFFFFF</color>
+
     <color name="black">#000000</color>
     <color name="grey">#EDEDED</color>
 
@@ -27,13 +31,13 @@
     <color name="hazel">#00C0F2</color>
     <color name="blue_button">#007AFF</color>
     <color name="grey_progress">#8C8C8C</color>
-    <color name="transparent">@android:color/transparent</color>
+
     <color name="seprator">#cccfd4</color>
     <color name="silver">#ced1d5</color>
     <color name="moreBackground">#efeff4</color>
     <color name="more_seprator">#c8c7cc</color>
 
-    <color name="color_yellow">#FFCC00</color>
+
     <color name="color_light_yellow">#FFE900</color>
 
     <color name="blue_questioanir_top">#7CD1F5</color>

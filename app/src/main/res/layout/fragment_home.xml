@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent"
+    android:background="@drawable/background_gradient"
     android:orientation="vertical">
 
     <LinearLayout
@@ -20,6 +20,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:tint="@color/colorWhite"
             android:src="@drawable/ic_location_searching" />
 
         <EditText
@@ -32,6 +33,7 @@
             android:digits="@string/digits"
             android:ems="10"
             android:hint="@string/title_search"
+            android:textColorHint="@color/colorWhite"
             android:inputType="textNoSuggestions"
             android:lines="1"
             android:maxLength="30"
@@ -44,6 +46,7 @@
         android:id="@+id/rvCityCardsView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_10dp"
         android:layout_below="@+id/llSearchView" />
 
     <ProgressBar

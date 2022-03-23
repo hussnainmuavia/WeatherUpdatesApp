@@ -59,21 +59,21 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
             "e5ea508aa7174598bc4104948222003",
             "Amman",
             "7",
-            "3",
+            "1",
             "json"
         )
         mHomeViewModel.getSearchResults(
             "e5ea508aa7174598bc4104948222003",
             "Irbid",
             "7",
-            "3",
+            "1",
             "json"
         )
         mHomeViewModel.getSearchResults(
             "e5ea508aa7174598bc4104948222003",
             "Aqaba",
             "7",
-            "3",
+            "1",
             "json"
         )
         mHomeViewModel.mSearchResult?.observe(this,

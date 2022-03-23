@@ -29,7 +29,7 @@
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_10dp"
                 android:src="@drawable/ic_location_on"
-                android:tint="@color/white"
+                android:tint="@color/colorWhite"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_10dp"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_20sp"
                 app:layout_constraintStart_toEndOf="@+id/ivLocationIcon"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +48,7 @@
                 android:id="@+id/tvDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintStart_toStartOf="@id/ivLocationIcon"
                 app:layout_constraintTop_toBottomOf="@+id/ivLocationIcon" />
@@ -71,7 +71,7 @@
                 android:layout_marginStart="@dimen/_10dp"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_20dp"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_32sp"
                 app:layout_constraintStart_toEndOf="@+id/ivWeatherIcon"
                 app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
@@ -83,7 +83,7 @@
                 android:layout_marginTop="@dimen/_20dp"
                 android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
@@ -94,7 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvClimate" />
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvHumidity" />
@@ -130,7 +130,7 @@
                 android:gravity="center_vertical|center_horizontal"
                 android:text="@string/more"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
