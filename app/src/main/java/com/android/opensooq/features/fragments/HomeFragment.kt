@@ -111,8 +111,12 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
 
     override fun onItemClickListener(position: Int, any: Any) {
         val favouriteModel = any as FavouriteModel
-        openSooqDatabase.openSooqDao().insertFavouriteCity(favouriteModel)
-        addFragment(CityDetailFragment())
+        addFragment(CityDetailFragment.newInstance(favouriteModel))
+    }
+
+    override fun onMoreClickListener(position: Int, any: Any) {
+        val favouriteModel = any as FavouriteModel
+        addFragment(CityDetailFragment.newInstance(favouriteModel))
     }
 
     private fun getSearchService(query: String) {

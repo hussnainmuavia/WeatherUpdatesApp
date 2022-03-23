@@ -1,11 +1,14 @@
 package com.android.opensooq.core.models.response
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "Month")
 data class Month(
     @SerializedName("id")
@@ -48,4 +51,4 @@ data class Month(
     @ColumnInfo(name = "avgDailyRainfall")
     @Expose
     var avgDailyRainfall: String? = null
-)
+): Parcelable

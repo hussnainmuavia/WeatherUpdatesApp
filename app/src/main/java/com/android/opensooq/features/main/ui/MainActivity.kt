@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import com.android.opensooq.R
 import com.android.opensooq.features.fragments.HomeFragment
 
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +23,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val setIntent = Intent(Intent.ACTION_MAIN)
-        setIntent.addCategory(Intent.CATEGORY_HOME)
-        startActivity(setIntent)
+        if (supportFragmentManager?.backStackEntryCount > 1){
+            supportFragmentManager.popBackStack()
+        } else {
+            val setIntent = Intent(Intent.ACTION_MAIN)
+            setIntent.addCategory(Intent.CATEGORY_HOME)
+            startActivity(setIntent)
+        }
     }
 }

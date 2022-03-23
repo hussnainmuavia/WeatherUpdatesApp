@@ -1,5 +1,6 @@
 package com.android.opensooq.core.models.response
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -7,7 +8,9 @@ import androidx.room.TypeConverters
 import com.android.opensooq.core.typeConverters.*
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "Data")
 data class Data(
 
@@ -40,4 +43,4 @@ data class Data(
     @TypeConverters(ClimateAverageTypeConverter::class)
     @Expose
     var climateAverages: List<ClimateAverage>? = null
-)
+) : Parcelable

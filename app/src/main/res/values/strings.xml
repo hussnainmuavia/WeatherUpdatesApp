@@ -16,4 +16,6 @@
     <string name="message_result_added">Search Result Added</string>
     <string name="message_result_already_added">Search Result Already Added</string>
     <string name="message_no_result_found">No Result Found</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

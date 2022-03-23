@@ -1,5 +1,6 @@
 package com.android.opensooq.core.models.response
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,7 +10,9 @@ import com.android.opensooq.core.typeConverters.WeatherDescTypeConverter
 import com.android.opensooq.core.typeConverters.WeatherIconUrlTypeConverter
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "CurrentCondition")
 data class CurrentCondition(
     @SerializedName("id")
@@ -124,4 +127,4 @@ data class CurrentCondition(
     @ColumnInfo(name = "uvIndex")
     @Expose
     var uvIndex: String? = null
-)
+): Parcelable

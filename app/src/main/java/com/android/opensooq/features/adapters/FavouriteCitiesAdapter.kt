@@ -62,7 +62,7 @@ class FavouriteCitiesAdapter(private val context: Context) :
         setHourlyAdapterView(holder, hourly)
 
         holder.tvMore.setOnClickListener {
-
+            mOnItemClickListener.onMoreClickListener(position, item!!)
         }
 
         holder.itemView.setOnClickListener {

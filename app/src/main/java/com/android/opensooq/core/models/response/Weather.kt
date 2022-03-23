@@ -1,11 +1,14 @@
 package com.android.opensooq.core.models.response
 
+import android.os.Parcelable
 import androidx.room.*
 import com.android.opensooq.core.typeConverters.HourlyTypeConverter
 import com.android.opensooq.core.typeConverters.RequestTypeConverter
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 @Entity(tableName = "Weather")
 data class Weather(
     @SerializedName("id")
@@ -75,4 +78,4 @@ data class Weather(
     @Expose
     @TypeConverters(HourlyTypeConverter::class)
     var hourly: ArrayList<Hourly>? = null
-)
+) : Parcelable
