@@ -22,6 +22,9 @@ import com.android.opensooq.core.dao.OpenSooqDatabase
 import com.android.opensooq.core.models.request.FavouriteModel
 import com.android.opensooq.core.models.response.SearchResult
 import com.android.opensooq.core.platform.BaseFragment
+import com.android.opensooq.core.utils.Constants.KEY_AMMAN
+import com.android.opensooq.core.utils.Constants.KEY_AQABA
+import com.android.opensooq.core.utils.Constants.KEY_IRBID
 import com.android.opensooq.core.utils.State
 import com.android.opensooq.features.adapters.FavouriteCitiesAdapter
 import com.android.opensooq.features.callbacks.OnItemClickListener
@@ -29,10 +32,6 @@ import com.android.opensooq.features.viewmodels.HomeViewModel
 
 
 class HomeFragment : BaseFragment(), OnItemClickListener {
-
-    private var KEY_AMMAN: String = "Amman"
-    private var KEY_IRBID: String = "Irbid"
-    private var KEY_AQABA: String = "Aqaba"
 
     private lateinit var mHomeViewModel: HomeViewModel
     private lateinit var openSooqDatabase: OpenSooqDatabase

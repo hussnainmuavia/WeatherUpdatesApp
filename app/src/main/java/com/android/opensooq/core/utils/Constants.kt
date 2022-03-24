@@ -12,4 +12,8 @@ object Constants {
     const val TIME_PERIOD = "1"
     const val NUM_OF_DAYS = "7"
     const val FORMAT = "json"
+
+    const val KEY_AMMAN: String = "Amman"
+    const val KEY_IRBID: String = "Irbid"
+    const val KEY_AQABA: String = "Aqaba"
 }
