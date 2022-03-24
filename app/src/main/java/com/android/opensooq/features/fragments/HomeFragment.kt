@@ -199,16 +199,9 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
        if (!mFavourites.contains(prepareFavouriteModel(search))) {
            mFavourites.add(prepareFavouriteModel(search))
            mFavouritesDB = mOpenSooqDao.favouriteCities as ArrayList<FavouriteModel>
-
            mFavouritesDB?.find { data?.request?.get(0)?.query == it.query}?.apply {
                mOpenSooqDao.deleteFavouriteModel(this)
            }
-
-           /*mFavouritesDB.forEach {
-               if (data?.request?.get(0)?.query == it.query){
-                   mOpenSooqDao.deleteFavouriteModel(it)
-               }
-           }*/
            mOpenSooqDao.insertFavouriteCity(prepareFavouriteModel(search))
            mFavouritesDB = mOpenSooqDao.favouriteCities as ArrayList<FavouriteModel>
            mFavouriteCities.setSearchResults(mFavouritesDB)
