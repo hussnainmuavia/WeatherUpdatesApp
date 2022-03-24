@@ -58,8 +58,9 @@ class FavouriteCitiesAdapter(private val context: Context) :
         holder.tvFeelsLike.text =
             context.getString(R.string.title_feels_like, currentCondition?.feelsLikeC)
 
-        val hourly = searchResult?.data?.weather?.get(position)?.hourly
-        setHourlyAdapterView(holder, hourly)
+        searchResult?.data?.weather?.get(position)?.hourly?.let { list ->
+            setHourlyAdapterView(holder, list)
+        }
 
         holder.tvMore.setOnClickListener {
             mOnItemClickListener.onMoreClickListener(position, item!!)

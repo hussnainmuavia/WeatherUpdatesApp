@@ -39,6 +39,7 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
     private lateinit var mSearchResult: SearchResult
     private lateinit var mFavouriteCities: FavouriteCitiesAdapter
     private var mFavourites: ArrayList<FavouriteModel> = ArrayList()
+    private var mFavouritesDB: ArrayList<FavouriteModel> = ArrayList()
 
     private lateinit var mView: View
     private lateinit var rvCityCardsView: RecyclerView
@@ -195,23 +196,28 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
    * */
     private fun setSearchResult(search: SearchResult) {
         val data = search.data
-        if (!mFavourites.contains(prepareFavouriteModel(search))) {
-            val favouriteModel = prepareFavouriteModel(search)
-            mFavourites.add(favouriteModel)
-            mFavourites = mOpenSooqDao.favouriteCities as ArrayList<FavouriteModel>
-            mFavourites.forEach {
-                if (data?.request?.get(0)?.query == it.query){
-                    mOpenSooqDao.deleteFavouriteModel(it)
-                }
-            }
-            mOpenSooqDao.insertFavouriteCity(favouriteModel)
-            mFavouriteCities.setSearchResults(mFavourites)
-            if (etSearch.text?.isNotEmpty() == true && search.data != null) {
-                notify(getString(R.string.message_result_added))
-            }
-        } else {
-            notify(getString(R.string.message_result_already_added))
-        }
+       if (!mFavourites.contains(prepareFavouriteModel(search))) {
+           mFavourites.add(prepareFavouriteModel(search))
+           mFavouritesDB = mOpenSooqDao.favouriteCities as ArrayList<FavouriteModel>
+
+           mFavouritesDB?.find { data?.request?.get(0)?.query == it.query}?.apply {
+               mOpenSooqDao.deleteFavouriteModel(this)
+           }
+
+           /*mFavouritesDB.forEach {
+               if (data?.request?.get(0)?.query == it.query){
+                   mOpenSooqDao.deleteFavouriteModel(it)
+               }
+           }*/
+           mOpenSooqDao.insertFavouriteCity(prepareFavouriteModel(search))
+           mFavouritesDB = mOpenSooqDao.favouriteCities as ArrayList<FavouriteModel>
+           mFavouriteCities.setSearchResults(mFavouritesDB)
+           if (etSearch.text?.isNotEmpty() == true && data != null) {
+               notify(getString(R.string.message_result_added))
+           }
+       } else {
+           notify(getString(R.string.message_result_already_added))
+       }
     }
 
     /*
@@ -302,6 +308,9 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
     *  NOTE: I am manually adding KEY params to demonstrate and fetch the record as mentioned in the
     * Task statement for the stated cities i.e Amman, Irbid, Aqaba
     * */
+    val KEY_AMMAN: String = "Amman"
+    val KEY_IRBID: String = "Irbid"
+    val KEY_AQABA: String = "Aqaba"
     private fun getDataFromRepoOrNetwork(){
         mFavourites = mOpenSooqDao.favouriteCities as ArrayList<FavouriteModel>
         if (mFavourites.isNotEmpty()){
