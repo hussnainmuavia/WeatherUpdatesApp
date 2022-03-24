@@ -24,12 +24,30 @@ class HomeViewModel @Inject constructor(private val apiInterface: ApiInterface) 
     var mSearchResult: MutableLiveData<SearchResult> = MutableLiveData()
     var mState: MutableLiveData<State> = MutableLiveData()
 
+    /*
+    * Search API service to search the city or data.
+    * Following, providing the default arguments to the API for demonstration and make call
+    * simple and easy to use.
+    * We can add/pass these arguments according to the need.
+    * */
     private fun getSearch(query: String) {
         compositeDisposable.add(
             apiInterface.getSearchResults(API_KEY, query, NUM_OF_DAYS, TIME_PERIOD, FORMAT)
+                /*
+                * Be notified on the main thread
+                * */
                 .observeOn(AndroidSchedulers.mainThread())
+                /*
+               * Run on a background thread
+               * */
                 .subscribeOn(Schedulers.io())
+                /*
+                * Run on subscribing
+                * */
                 .doOnSubscribe { updateState(State.LOADING) }
+                /*
+                * Run when the calls end.
+                * */
                 .doFinally { updateState(State.DONE) }
                 .subscribe({ response ->
                     handleSearchResponse(response)

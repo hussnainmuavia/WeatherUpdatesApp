@@ -2,7 +2,6 @@ package com.android.opensooq.core.utils
 
 object Constants {
     const val API_ERROR = "API ERROR"
-    const val LOG_MESSAGE = "OPEN_SOOQ"
     const val KEY_KEY = "key"
     const val KEY_QUERY = "q"
     const val KEY_NUMBER_OF_DAYS = "num_of_days"
