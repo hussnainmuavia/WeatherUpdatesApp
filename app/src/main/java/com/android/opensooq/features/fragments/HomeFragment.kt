@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.opensooq.R
+import com.android.opensooq.core.dao.OpenSooqDao
 import com.android.opensooq.core.dao.OpenSooqDatabase
 import com.android.opensooq.core.models.request.FavouriteModel
 import com.android.opensooq.core.models.response.SearchResult
@@ -35,6 +36,7 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
 
     private lateinit var mHomeViewModel: HomeViewModel
     private lateinit var openSooqDatabase: OpenSooqDatabase
+    private lateinit var mOpenSooqDao: OpenSooqDao
     private lateinit var mSearchResult: SearchResult
     private lateinit var mFavouriteCities: FavouriteCitiesAdapter
     private var mFavourites: ArrayList<FavouriteModel> = ArrayList()
@@ -77,12 +79,19 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         swipeToRefresh()
     }
 
+    /*
+    * Initializing view model for the Fragment
+    * It is just a demonstration to show case the operations with ViewModel and APIs inside it.
+    * */
     private fun initViewModels() {
         mHomeViewModel =
             ViewModelProviders
                 .of(this, viewModelFactory)[HomeViewModel::class.java]
     }
 
+    /*
+    * observing the State for the mProgressBar on the bases of API call subscriptions
+    * */
     private fun observeStateLoader() {
         mHomeViewModel?.getState().observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -93,71 +102,126 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         })
     }
 
+    /*
+    * Initializing database instance here for the Database related operations
+    * */
     private fun initDatabaseInstance() {
         this.context?.let {
             OpenSooqDatabase.getDatabaseInstance(it)?.let { dbInstance ->
                 openSooqDatabase = dbInstance
             }
         }
+        mOpenSooqDao = openSooqDatabase.openSooqDao()
     }
 
+    /*
+    * Initializing the Favourite cities adapter view.
+    * registering callback and adding favourite city adapter.
+    * */
     private fun initAdapterViews() {
         mFavouriteCities = FavouriteCitiesAdapter(requireContext())
-        rvCityCardsView?.apply {
-            layoutManager = LinearLayoutManager(context) as RecyclerView.LayoutManager?
+        rvCityCardsView.apply {
+            layoutManager = LinearLayoutManager(context)
             adapter = mFavouriteCities
         }
         mFavouriteCities.registerCallback(this@HomeFragment)
     }
 
+    /*
+    * It will listen the click over the item of the adapter view and handle
+    * further navigation towards the details fragment
+    * */
     override fun onItemClickListener(position: Int, any: Any) {
         val favouriteModel = any as FavouriteModel
         addFragment(CityDetailFragment.newInstance(favouriteModel))
     }
 
+    /*
+    * It is for the demonstration purpose to show the details of the selected city updates
+    * we can add/do further actions/details inside this @fragment CityDetailFragment
+    * */
     override fun onMoreClickListener(position: Int, any: Any) {
         val favouriteModel = any as FavouriteModel
         addFragment(CityDetailFragment.newInstance(favouriteModel))
     }
 
+    /*
+    * Pull to refresh is to always have a updated data
+    * */
     private fun swipeToRefresh(){
         pullToRefresh.setOnRefreshListener {
-            mFavourites = openSooqDatabase.openSooqDao().favouriteCities as ArrayList<FavouriteModel>
+            mFavourites = mOpenSooqDao.favouriteCities as ArrayList<FavouriteModel>
             mFavourites?.forEach {
-                mHomeViewModel.getSearchResults(it.query.toString())
+                getSearchService(it.query.toString())
             }
-
             pullToRefresh.isRefreshing = false
         }
     }
 
+    /*
+    * API call for searching the query.
+    * Here in this function call passing the query only
+    * to search city for weather updates from the API
+    * So the Query will be String input by user.
+    * @param query String
+    * */
     private fun getSearchService(query: String) {
         mHomeViewModel.getSearchResults(query)
     }
 
+    /*
+    * Observing the @param mSearchResult as MutableLiveData when getSearch API will call.
+    * It will observe the API response and pass the data to [setSearchResult] function.
+    * */
     private fun observeSearchResult() {
         mHomeViewModel.mSearchResult.observe(this,
             Observer<SearchResult> { search ->
-                if (search?.data?.currentCondition != null) {
+                val data = search?.data
+                if (data?.currentCondition != null) {
                     showHide(isVisible = true)
                     mSearchResult = search
-                    if (!mFavourites.contains(prepareFavouriteModel(search))) {
-                        val favouriteModel = prepareFavouriteModel(search)
-                        mFavourites.add(favouriteModel)
-                        openSooqDatabase.openSooqDao().insertFavouriteCity(favouriteModel)
-                        mFavouriteCities.setSearchResults(mFavourites)
-                        if (etSearch.text?.isNotEmpty() == true && search.data != null) {
-                            notify(getString(R.string.message_result_added))
-                        }
-                    } else {
-                        notify(getString(R.string.message_result_already_added))
-                    }
+                    setSearchResult(search)
                 } else {
                     showHide(isVisible = false)
                 }
             })
     }
 
+   /*
+   * This to set SearchResult to the adapter
+   * Checking either the records are in database or not.
+   * if record found it will remove the old record and add new record for updated data purposes.
+   * It will always have an update version of the data by checking the record from db.
+   * @param search SearchResult
+   * */
+    private fun setSearchResult(search: SearchResult) {
+        val data = search.data
+        if (!mFavourites.contains(prepareFavouriteModel(search))) {
+            val favouriteModel = prepareFavouriteModel(search)
+            mFavourites.add(favouriteModel)
+            mFavourites = mOpenSooqDao.favouriteCities as ArrayList<FavouriteModel>
+            mFavourites.forEach {
+                if (data?.request?.get(0)?.query == it.query){
+                    mOpenSooqDao.deleteFavouriteModel(it)
+                }
+            }
+            mOpenSooqDao.insertFavouriteCity(favouriteModel)
+            mFavouriteCities.setSearchResults(mFavourites)
+            if (etSearch.text?.isNotEmpty() == true && search.data != null) {
+                notify(getString(R.string.message_result_added))
+            }
+        } else {
+            notify(getString(R.string.message_result_already_added))
+        }
+    }
+
+    /*
+    * This to prepare the list view to make adapter more accessible and
+    * iterable. We are adding the city as a key and the SearchResult for details of that key
+    * weather update
+    * @param searchResult SearchResult
+    * @return A new instance of FavouriteModel.
+    * */
     private fun prepareFavouriteModel(searchResult: SearchResult): FavouriteModel {
         val favouriteModel = FavouriteModel()
         favouriteModel.query = searchResult.data?.request?.get(0)?.query
@@ -173,12 +237,24 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
             override fun afterTextChanged(editable: Editable) {
                 val search = editable.toString()
                 if (search?.isNotEmpty() && search?.length >= 2) {
-                    getSearchService(search)
+                    //getSearchService(search)
+
+                    /*
+                    * Intentionally commenting it out to just demonstrate that we can add
+                    * search here by just observing edit text or we can search the result by
+                    * pressing the search icon from keypad in @etSearchEditorActionListener()
+                    * */
                 }
             }
         })
     }
 
+
+    /*
+    * we can add search results here by just pressing the search icon
+    * from keypad in @etSearchEditorActionListener()
+    * @param etSearch EditText
+    * */
     private fun etSearchEditorActionListener() {
         etSearch.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -193,6 +269,13 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         })
     }
 
+    /*
+    * It will show either the @rvCityCardsView RecyclerView if result found or if no record found
+    * or empty view then it will show no result found @tvNoResultFound TextView
+    * @param isVisible Boolean.
+    * @param rvCityCardsView RecyclerView
+    * @param tvNoResultFound TextView
+    * */
     private fun showHide(isVisible: Boolean){
         when(isVisible){
             true -> {
@@ -210,18 +293,36 @@ class HomeFragment : BaseFragment(), OnItemClickListener {
         }
     }
 
+
+    /*
+    * It is the requirement of the task to show the data from database or API.
+    * It will initially check the data from the Room Database for stored Cities.
+    * If data found from the DB, it will show the record in adapterView.
+    * Or it will fetch the latest data from the API and show in adapterView.
+    *
+    *  NOTE: I am manually adding KEY params to demonstrate and fetch the record as mentioned in the
+    * Task statement for the stated cities i.e Amman, Irbid, Aqaba
+    * */
     private fun getDataFromRepoOrNetwork(){
-        mFavourites = openSooqDatabase.openSooqDao().favouriteCities as ArrayList<FavouriteModel>
+        mFavourites = mOpenSooqDao.favouriteCities as ArrayList<FavouriteModel>
         if (mFavourites.isNotEmpty()){
             showHide(isVisible = true)
             mFavouriteCities.setSearchResults(mFavourites)
         } else {
+            /*
+            * NOTE: I am manually adding KEY params to demonstrate and fetch the record as mentioned in the
+            * Task statement for the stated cities i.e Amman, Irbid, Aqaba
+            * */
             getSearchService(KEY_AMMAN)
             getSearchService(KEY_IRBID)
             getSearchService(KEY_AQABA)
         }
     }
 
+    /*
+    * Call on exit
+    * Destroy the database instance to avoid memory leaks
+    * */
     override fun onDestroy() {
         openSooqDatabase?.destroyInstance()
         super.onDestroy()

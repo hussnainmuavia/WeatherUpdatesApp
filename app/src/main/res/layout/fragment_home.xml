@@ -47,15 +47,15 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llSearchView">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCityCardsView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/llSearchView"
-            android:scrollbars="none"
             android:layout_marginBottom="@dimen/_10dp"
+            android:scrollbars="none"
             android:visibility="gone" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
