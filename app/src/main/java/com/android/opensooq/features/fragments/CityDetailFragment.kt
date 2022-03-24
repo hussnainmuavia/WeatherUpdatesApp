@@ -31,7 +31,6 @@ class CityDetailFragment : BaseFragment() {
     private lateinit var tvHumidity: TextView
     private lateinit var tvFeelsLike: TextView
     private lateinit var rvForecasts: RecyclerView
-    private lateinit var tvMore: TextView
 
     companion object {
         /**
@@ -73,7 +72,6 @@ class CityDetailFragment : BaseFragment() {
         tvHumidity = mView.findViewById(R.id.tvHumidity)
         tvFeelsLike = mView.findViewById(R.id.tvFeelsLike)
         rvForecasts = mView.findViewById(R.id.rvForecasts)
-        tvMore = mView.findViewById(R.id.tvMore)
         return mView
     }
 
