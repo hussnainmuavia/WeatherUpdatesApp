@@ -25,22 +25,26 @@
                 android:id="@+id/ivLocationIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10dp"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_10dp"
-                android:tint="@color/white"
                 android:src="@drawable/ic_location_on"
+                android:tint="@color/colorWhite"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tvCityName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_10dp"
-                android:text="Lahore"
-                android:textColor="@color/white"
+                android:layout_marginRight="@dimen/_10dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_20sp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/ivLocationIcon"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,31 +52,33 @@
                 android:id="@+id/tvDateTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wed, 23 March 1:45 am"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sp"
-                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="@id/ivLocationIcon"
                 app:layout_constraintTop_toBottomOf="@+id/ivLocationIcon" />
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivWeatherIcon"
                 android:layout_width="@dimen/_50dp"
                 android:layout_height="@dimen/_50dp"
                 android:layout_marginTop="@dimen/_20dp"
-                android:src="@drawable/ic_location_on"
-                android:tint="@color/white"
+                android:src="@mipmap/ic_launcher"
+                app:civ_border_color="@color/transparent"
+                app:civ_border_width="2dp"
                 app:layout_constraintStart_toStartOf="@id/tvDateTime"
                 app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
             <TextView
-                android:id="@+id/tvTemprature"
+                android:id="@+id/tvTemperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10dp"
                 android:layout_marginLeft="@dimen/_10dp"
                 android:layout_marginTop="@dimen/_20dp"
-                android:text="@string/temp_degree"
-                android:textSize="@dimen/_35sp"
-                android:textColor="@color/white"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_32sp"
                 app:layout_constraintStart_toEndOf="@+id/ivWeatherIcon"
                 app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
@@ -81,21 +87,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20dp"
+                android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
-                android:text="Smoke"
-                android:textColor="@color/white"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvDateTime" />
 
             <TextView
-                android:id="@+id/tvMaxTemp"
+                android:id="@+id/tvHumidity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
-                android:text="@string/temp_max_degree"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sp"
-                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvClimate" />
 
@@ -103,12 +113,14 @@
                 android:id="@+id/tvFeelsLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_10dp"
                 android:layout_marginRight="@dimen/_10dp"
-                android:text="Feels like 23"
-                android:textColor="@color/white"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvMaxTemp" />
+                app:layout_constraintTop_toBottomOf="@+id/tvHumidity" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvForecasts"
@@ -127,16 +139,17 @@
                 android:layout_marginTop="@dimen/_10dp"
                 android:layout_marginBottom="@dimen/_10dp"
                 android:background="@drawable/badge_circular"
+                android:ellipsize="end"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="More"
+                android:maxLines="1"
+                android:text="@string/more"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rvForecasts" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

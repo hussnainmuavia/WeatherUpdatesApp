@@ -19,11 +19,11 @@ class AndroidApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        //this.injectMembers()
+        this.injectMembers()
         context = applicationContext
     }
 
-    //private fun injectMembers() = appComponent.inject(this)
+    private fun injectMembers() = appComponent.inject(this)
 
     fun getApplicationComponent(): ApplicationComponent {
         return appComponent

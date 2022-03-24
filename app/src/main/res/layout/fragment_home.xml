@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/transparent"
+    android:background="@drawable/background_gradient"
     android:orientation="vertical">
 
     <LinearLayout
@@ -20,36 +20,61 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_location_searching" />
+            android:layout_marginLeft="@dimen/_10dp"
+            android:src="@drawable/ic_location_searching"
+            android:tint="@color/colorWhite" />
 
         <EditText
-            android:id="@+id/editMobileNo"
+            android:id="@+id/etSearch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40dp"
             android:layout_marginStart="@dimen/_10dp"
             android:layout_marginLeft="@dimen/_10dp"
             android:background="@color/transparent"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz"
             android:ems="10"
             android:hint="@string/title_search"
-            android:inputType="textNoSuggestions"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
             android:lines="1"
-            android:maxLength="40"
+            android:maxLength="30"
             android:maxLines="1"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite"
             android:textSize="@dimen/_17sp" />
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCityCardsView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/pullToRefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/llSearchView" />
+        android:layout_below="@+id/llSearchView">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCityCardsView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10dp"
+            android:scrollbars="none"
+            android:visibility="gone" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tvNoResultFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="@string/message_no_result_found"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_17sp"
+        android:visibility="gone" />
 
 </RelativeLayout>

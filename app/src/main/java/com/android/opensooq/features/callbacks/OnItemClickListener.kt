@@ -2,5 +2,7 @@ package com.android.opensooq.features.callbacks
 
 interface OnItemClickListener {
 
-    fun onUserItemClickListener(position: Int)
+    fun onItemClickListener(position: Int, any: Any)
+
+    fun onMoreClickListener(position: Int, any: Any)
 }
