@@ -13,7 +13,7 @@ import java.util.List;
 @Dao
 public interface OpenSooqDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertFavouriteCity(FavouriteModel favouriteModel);
 
     @Query("SELECT * FROM FavouriteModel")
