@@ -1,4 +1,4 @@
-# Open Sooq - Weather Updates (Coding Evaluation)
+# Weather Updates (Coding Evaluation)
 
 # Android MVVM Architecture Component With Room in Kotlin
 
